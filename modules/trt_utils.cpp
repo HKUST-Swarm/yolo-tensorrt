@@ -628,24 +628,24 @@ nvinfer1::ILayer* netAddUpsample(int layerIdx, std::map<std::string, std::string
       [0, 0, ..., 1] ]
     */
    
-    // for (int i = 0, idx = 0; i < h; ++i)
-    // {
-    //     for (int s = 0; s < stride; ++s)
-    //     {
-    //         for (int j = 0; j < h; ++j, ++idx)
-    //         {
-    //             preWt[idx] = (i == j) ? 1.0 : 0.0;
-    //         }
-    //     }
-    // }
-    for (int i = 0; i < stride; i ++) {
-        for (int j = 0; j < h; j ++) {
-            int _i1 = i * 2;
-            int _i2 = i * 2 + 1;
-            preWt[_i1*h + j] = 1;
-            preWt[_i2*h + j] = 1;
+    for (int i = 0, idx = 0; i < h; ++i)
+    {
+        for (int s = 0; s < stride; ++s)
+        {
+            for (int j = 0; j < h; ++j, ++idx)
+            {
+                preWt[idx] = (i == j) ? 1.0 : 0.0;
+            }
         }
     }
+    // for (int i = 0; i < stride; i ++) {
+    //     for (int j = 0; j < h; j ++) {
+    //         int _i1 = i * 2;
+    //         int _i2 = i * 2 + 1;
+    //         preWt[_i1*h + j] = 1;
+    //         preWt[_i2*h + j] = 1;
+    //     }
+    // }
 
     preMul.values = preWt;
     trtWeights.push_back(preMul);
@@ -669,20 +669,20 @@ nvinfer1::ILayer* netAddUpsample(int layerIdx, std::map<std::string, std::string
       ...,
       [0, 0, 0, 0, ..., 1, 1] ]
     */
-    // for (int i = 0, idx = 0; i < w; ++i)
-    // {
-    //     for (int j = 0; j < stride * w; ++j, ++idx)
-    //     {
-    //         postWt[idx] = (j / stride == i) ? 1.0 : 0.0;
-    //     }
-    // }
-
-    for (int i = 0; i < w; i ++) {
-        for (int j = 0; j < w; j ++) {
-            postWt[i*w + 2*j] = 1;
-            postWt[i*w + 2*j + 1] = 1;
+    for (int i = 0, idx = 0; i < w; ++i)
+    {
+        for (int j = 0; j < stride * w; ++j, ++idx)
+        {
+            postWt[idx] = (j / stride == i) ? 1.0 : 0.0;
         }
     }
+
+    // for (int i = 0; i < w; i ++) {
+    //     for (int j = 0; j < w; j ++) {
+    //         postWt[i*w + 2*j] = 1;
+    //         postWt[i*w + 2*j + 1] = 1;
+    //     }
+    // }
 
     postMul.values = postWt;
     trtWeights.push_back(postMul);
