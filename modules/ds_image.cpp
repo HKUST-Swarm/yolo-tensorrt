@@ -140,7 +140,7 @@ DsImage::DsImage(const std::string& path, const int& inputH, const int& inputW) 
 	/*cv::copyMakeBorder(m_LetterboxImage, m_LetterboxImage, m_YOffset, m_YOffset, m_XOffset,
 					   m_XOffset, cv::BORDER_CONSTANT, cv::Scalar(128, 128, 128));*/
     // converting to RGB
-    cv::cvtColor(m_LetterboxImage, m_LetterboxImage,cv::COLOR_BGR2RGB);
+    // cv::cvtColor(m_LetterboxImage, m_LetterboxImage,cv::COLOR_BGR2RGB);
 }
 
 void DsImage::addBBox(BBoxInfo box, const std::string& labelName)
