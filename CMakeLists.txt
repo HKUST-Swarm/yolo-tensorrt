@@ -18,7 +18,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,$ORIGIN")
 find_package(CUDA REQUIRED)
 set(TENSORRT_ROOT /home/xuhao/source/TensorRT-5.1.5.0)
 
-include_directories(${TENSORRT_ROOT}/include extra)
+include_directories(${TENSORRT_ROOT}/include extra /usr/include1)
 link_directories(${TENSORRT_ROOT}/lib)
 
 message("-- CUDA version:$(CUDA_VERSION)")
