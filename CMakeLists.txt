@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.1) 
-project(yolo-trt)            
+cmake_minimum_required(VERSION 3.1)
+project(yolo-trt)
 
 file(GLOB_RECURSE sources     	modules/*.hpp modules/*.cpp modules/*.h modules/*.cu extra/*.h)
 add_executable(yolo-trt samples/sample_detector.cpp)
@@ -17,7 +17,9 @@ if(CUDA_VERSION_MAJOR GREATER 9)
 	message("-- CUDA ${CUDA_VERSION_MAJOR} detected")
 		set(
 		CUDA_NVCC_FLAGS
-		${CUDA_NVCC_FLAGS}; 
+		${CUDA_NVCC_FLAGS};
+        -gencode arch=compute_72,code=sm_72
+		-gencode arch=compute_62,code=sm_62
 		)
 endif()
 
@@ -29,8 +31,8 @@ endif()
 #generate detector lib
 cuda_add_library(detector SHARED ${sources})
 target_include_directories(detector PRIVATE extra/ modules/ ${OpenCV_INCLUDE_DIRS} ${CUDA_TOOLKIT_ROOT_DIR}/include ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
-target_link_libraries(detector nvinfer nvinfer_plugin nvcaffe_parser "stdc++fs")
-				  
+target_link_libraries(detector nvinfer nvinfer_plugin nvparsers "stdc++fs")
+
 target_include_directories(yolo-trt PRIVATE modules/ extra/)
 target_link_libraries(yolo-trt detector opencv_highgui opencv_imgproc opencv_core opencv_calib3d opencv_dnn)
 
